@@ -33,6 +33,17 @@ describe('MongoDB-backed persistence', () => {
     const users = await mongoose.connection.collection('users').find({}).toArray();
     expect(users.length).toBe(1);
     expect(users[0].email).toBe('db@example.com');
+    expect(users[0].passwordHash).toBeDefined();
+    expect(users[0].passwordHash).not.toBe('secret123');
+    expect(reg.body.data.user).not.toHaveProperty('passwordHash');
+  });
+
+  it('rejects a duplicate email with 409', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'DB User Again', email: 'db@example.com', password: 'secret123', role: 'HR' });
+
+    expect(response.status).toBe(409);
   });
 
   it('persists the workflow, tasks, and approvals collections', async () => {

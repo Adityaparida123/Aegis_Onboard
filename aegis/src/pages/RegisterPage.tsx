@@ -6,22 +6,26 @@ import { z } from 'zod';
 import { Lock, Mail, ShieldCheck, User } from 'lucide-react';
 import { toast } from 'sonner';
 import { registerUser } from '../api/auth.api';
-import { useAuthStore } from '../store/authStore';
 
 const ROLES = ['HR', 'Admin', 'IT', 'Finance', 'Security Manager'];
 
-const schema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Enter a valid email'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  role: z.enum(['HR', 'Admin', 'IT', 'Finance', 'Security Manager'])
-});
+const schema = z
+  .object({
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    email: z.string().email('Enter a valid email'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string(),
+    role: z.enum(['HR', 'Admin', 'IT', 'Finance', 'Security Manager'])
+  })
+  .refine((values) => values.password === values.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword']
+  });
 
 type FormValues = z.infer<typeof schema>;
 
 export function RegisterPage() {
   const [loading, setLoading] = useState(false);
-  const { login } = useAuthStore();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -31,13 +35,12 @@ export function RegisterPage() {
   async function onSubmit(values: FormValues) {
     setLoading(true);
     try {
-      const response = await registerUser(values.name, values.email, values.password, values.role);
-      const payload = response?.data ?? response;
-      login({ name: payload.user?.name ?? values.name, email: payload.user?.email ?? values.email, role: payload.user?.role ?? values.role }, payload.token);
-      toast.success('Account created — signed in');
-      navigate('/dashboard');
-    } catch (error) {
-      toast.error('Unable to create account. Try a different email.');
+      await registerUser(values.name, values.email, values.password, values.role);
+      toast.success('Account created — sign in with your credentials');
+      navigate('/login');
+    } catch (error: any) {
+      const message = error?.response?.data?.error;
+      toast.error(message || 'Unable to create account. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -85,6 +88,14 @@ export function RegisterPage() {
                   <input className="w-full bg-transparent outline-none" type="password" placeholder="••••••••" {...register('password')} />
                 </div>
                 {errors.password ? <p className="mt-1 text-sm text-rose-600">{errors.password.message}</p> : null}
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-slate-700">Confirm Password</span>
+                <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
+                  <Lock className="h-4 w-4 text-slate-400" />
+                  <input className="w-full bg-transparent outline-none" type="password" placeholder="••••••••" {...register('confirmPassword')} />
+                </div>
+                {errors.confirmPassword ? <p className="mt-1 text-sm text-rose-600">{errors.confirmPassword.message}</p> : null}
               </label>
               <label className="block">
                 <span className="mb-2 block text-sm font-medium text-slate-700">Role</span>

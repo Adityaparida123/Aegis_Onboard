@@ -26,6 +26,47 @@ describe('Aegis backend API', () => {
     expect(response.body.data.token).toBeDefined();
   });
 
+  it('rejects a duplicate email with 409', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Ada Again', email: 'ada@example.com', password: 'secret123', role: 'HR' });
+
+    expect(response.status).toBe(409);
+    expect(response.body.error).toContain('already exists');
+  });
+
+  it('rejects weak passwords', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Weakling', email: 'weak@example.com', password: '123', role: 'HR' });
+
+    expect(response.status).toBe(400);
+  });
+
+  it('rejects invalid email addresses', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Bad Email', email: 'not-an-email', password: 'secret123', role: 'HR' });
+
+    expect(response.status).toBe(400);
+  });
+
+  it('rejects unknown roles', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Rogue', email: 'rogue@example.com', password: 'secret123', role: 'Super Admin' });
+
+    expect(response.status).toBe(400);
+  });
+
+  it('rejects empty registration fields', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({ email: '', password: '', role: 'HR' });
+
+    expect(response.status).toBe(400);
+  });
+
   it('creates a workflow for an employee', async () => {
     const response = await request(app)
       .post('/api/workflows')

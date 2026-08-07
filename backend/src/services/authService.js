@@ -1,23 +1,28 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../config/env');
-const { ValidationError, UnauthorizedError } = require('../utils/errors');
+const { ValidationError, UnauthorizedError, ConflictError } = require('../utils/errors');
 const { createUser, findUserByEmail } = require('../repositories/userRepository');
+
+function normalizeEmail(email) {
+  return String(email).trim().toLowerCase();
+}
 
 async function registerUser(input) {
   if (!input.email || !input.password || !input.name) {
     throw new ValidationError('Name, email, and password are required');
   }
 
-  const existing = await findUserByEmail(input.email);
+  const email = normalizeEmail(input.email);
+  const existing = await findUserByEmail(email);
   if (existing) {
-    throw new ValidationError('User with this email already exists');
+    throw new ConflictError('User with this email already exists');
   }
 
   const passwordHash = await bcrypt.hash(input.password, 10);
   const user = await createUser({
-    name: input.name,
-    email: input.email,
+    name: input.name.trim(),
+    email,
     passwordHash,
     role: input.role || 'HR'
   });
@@ -27,7 +32,8 @@ async function registerUser(input) {
 }
 
 async function loginUser(input) {
-  const user = await findUserByEmail(input.email);
+  const email = normalizeEmail(input.email);
+  const user = await findUserByEmail(email);
   if (!user) {
     throw new UnauthorizedError('Invalid email or password');
   }
