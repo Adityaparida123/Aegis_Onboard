@@ -38,9 +38,10 @@ export function RegisterPage() {
       await registerUser(values.name, values.email, values.password, values.role);
       toast.success('Account created — sign in with your credentials');
       navigate('/login');
-    } catch (error: any) {
-      const message = error?.response?.data?.error;
-      toast.error(message || 'Unable to create account. Please try again.');
+    } catch (error) {
+      const err = error as { response?: { data?: { error?: string } }; message?: string } | null;
+      const message = err?.response?.data?.error || err?.message || 'Unable to create account. Please try again.';
+      toast.error(message);
     } finally {
       setLoading(false);
     }

@@ -19,9 +19,20 @@ const policyRoutes = require('./routes/policyRoutes');
 
 const app = express();
 
+const allowedOrigins = require('./config/env').allowedOrigins;
+
 app.use(helmet());
 app.use(compression());
-app.use(cors());
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Origin not allowed by CORS'));
+    }
+  })
+);
 app.use(express.json());
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
 
