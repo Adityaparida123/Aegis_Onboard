@@ -1,0 +1,693 @@
+# Frontend Architecture Document
+
+## Project Name
+
+**Intelligent Employee Onboarding & Cross-Departmental Provisioning System**
+
+**Version:** 1.0
+
+**Track:** Business Process Automation
+
+---
+
+# 1. Executive Summary
+
+## Purpose
+
+The frontend provides an intuitive enterprise dashboard that allows HR, IT, Finance, and Security teams to collaborate throughout the employee onboarding process.
+
+It visualizes AI-driven workflows, human approvals, provisioning progress, and audit logs while communicating with the backend exclusively through REST APIs.
+
+The UI emphasizes transparency, traceability, and operational efficiency.
+
+---
+
+# 2. Design Goals
+
+The frontend is designed to:
+
+* Provide a professional enterprise experience
+* Visualize AI-generated workflows
+* Support Human-in-the-Loop approvals
+* Display onboarding progress in real time
+* Present audit logs clearly
+* Remain responsive across desktop and tablet devices
+* Separate presentation logic from business logic
+
+---
+
+# 3. User Roles
+
+## HR
+
+Responsibilities
+
+* Upload Offer Letter
+* View onboarding status
+* Track workflow
+* Monitor progress
+
+---
+
+## IT
+
+Responsibilities
+
+* View assigned provisioning tasks
+* Update provisioning status
+
+---
+
+## Finance
+
+Responsibilities
+
+* Complete payroll setup
+* View finance-related tasks
+
+---
+
+## Security Manager
+
+Responsibilities
+
+* Review privileged access requests
+* Approve or reject provisioning
+
+---
+
+## Administrator
+
+Responsibilities
+
+* Manage policies
+* Manage users
+* View analytics
+* Configure system settings
+
+---
+
+# 4. UI Technology Stack
+
+Framework
+
+* React 19
+* Vite
+
+Language
+
+* TypeScript
+
+Styling
+
+* Tailwind CSS
+
+UI Components
+
+* shadcn/ui
+
+Icons
+
+* Lucide React
+
+State Management
+
+* Zustand
+
+Data Fetching
+
+* TanStack Query
+
+Routing
+
+* React Router DOM
+
+HTTP Client
+
+* Axios
+
+Forms
+
+* React Hook Form
+
+Validation
+
+* Zod
+
+Charts
+
+* Recharts
+
+Tables
+
+* TanStack Table
+
+Notifications
+
+* Sonner
+
+Dates
+
+* date-fns
+
+Workflow Visualization
+
+* React Flow
+
+---
+
+# 5. High-Level Frontend Architecture
+
+```text
+User
+ │
+ ▼
+React UI
+ │
+ ▼
+React Router
+ │
+ ▼
+Pages
+ │
+ ▼
+Reusable Components
+ │
+ ▼
+State Management (Zustand)
+ │
+ ▼
+API Services (Axios)
+ │
+ ▼
+Backend REST APIs
+ │
+ ▼
+MongoDB
+```
+
+---
+
+# 6. Folder Structure
+
+```text
+src/
+
+assets/
+
+components/
+
+layouts/
+
+pages/
+
+hooks/
+
+services/
+
+api/
+
+store/
+
+types/
+
+contexts/
+
+routes/
+
+utils/
+
+constants/
+
+styles/
+```
+
+---
+
+# 7. Application Layout
+
+```text
+┌──────────────────────────────────────────┐
+│ Top Navigation                           │
+├───────────────┬──────────────────────────┤
+│ Sidebar       │                          │
+│               │ Main Content             │
+│               │                          │
+│               │ Dashboard                │
+│               │ Tables                   │
+│               │ Workflow                 │
+│               │ Analytics                │
+│               │                          │
+└───────────────┴──────────────────────────┘
+```
+
+---
+
+# 8. Navigation Structure
+
+Dashboard
+
+Employees
+
+Onboarding
+
+Workflows
+
+Approvals
+
+Audit Logs
+
+Policies
+
+Analytics
+
+Settings
+
+---
+
+# 9. Page Architecture
+
+## Login
+
+Purpose
+
+Authenticate users.
+
+Components
+
+* Login Form
+* Validation
+* Loading Indicator
+
+---
+
+## Dashboard
+
+Purpose
+
+Provide a system overview.
+
+Widgets
+
+* KPI Cards
+* Workflow Chart
+* Pending Approvals
+* Recent Activity
+* Department Statistics
+
+---
+
+## Employee Management
+
+Features
+
+* Employee List
+* Search
+* Filters
+* Pagination
+* Detail View
+
+---
+
+## Offer Upload
+
+Features
+
+* Drag & Drop
+* File Validation
+* Upload Progress
+* AI Extraction Preview
+
+---
+
+## Workflow
+
+Purpose
+
+Visualize onboarding workflow.
+
+Display
+
+* Task Nodes
+* Dependency Graph
+* Current Status
+* Progress Indicator
+
+---
+
+## Approval Center
+
+Purpose
+
+Support Human-in-the-Loop approval.
+
+Features
+
+* Pending Requests
+* Approval Dialog
+* Rejection Dialog
+* Decision History
+
+---
+
+## Audit Logs
+
+Features
+
+* Timeline
+* Search
+* Filters
+* Detailed Log View
+
+---
+
+## Policies
+
+Purpose
+
+Display role-to-resource mappings.
+
+Features
+
+* Policy Table
+* Approval Requirements
+* CRUD (if supported)
+
+---
+
+## Analytics
+
+Charts
+
+* Workflow Completion Time
+* Approval Rate
+* Department Load
+* Daily Onboardings
+
+---
+
+## Settings
+
+Features
+
+* User Profile
+* Theme
+* Notifications
+* Company Settings
+
+---
+
+# 10. Component Hierarchy
+
+```text
+App
+
+└── AppLayout
+
+    ├── Sidebar
+
+    ├── Topbar
+
+    ├── Dashboard
+
+    │
+
+    ├── Employee Pages
+
+    │
+
+    ├── Workflow Pages
+
+    │
+
+    ├── Approval Pages
+
+    │
+
+    ├── Audit Pages
+
+    │
+
+    └── Settings
+```
+
+---
+
+# 11. Reusable Components
+
+* AppShell
+* Sidebar
+* Topbar
+* StatCard
+* EmployeeCard
+* ApprovalCard
+* WorkflowNode
+* StatusBadge
+* ProgressTimeline
+* AuditTable
+* ChartCard
+* SearchBar
+* FilterPanel
+* EmptyState
+* ErrorState
+* LoadingSkeleton
+
+---
+
+# 12. State Management
+
+Authentication Store
+
+Dashboard Store
+
+Workflow Store
+
+Employee Store
+
+Approval Store
+
+Notification Store
+
+Settings Store
+
+Business logic remains in the backend.
+
+Stores only maintain UI state.
+
+---
+
+# 13. API Communication
+
+Authentication
+
+POST /api/auth/login
+
+Employees
+
+GET /api/employees
+
+GET /api/employees/:id
+
+Offer Upload
+
+POST /api/upload-offer
+
+Workflow
+
+POST /api/workflows
+
+GET /api/workflows/:id
+
+Approvals
+
+POST /api/approvals/:id/approve
+
+POST /api/approvals/:id/reject
+
+Audit
+
+GET /api/audit/:workflowId
+
+Dashboard
+
+GET /api/dashboard
+
+---
+
+# 14. Workflow Visualization
+
+Workflow states
+
+Pending
+
+Running
+
+Completed
+
+Failed
+
+Waiting Approval
+
+Color Mapping
+
+Pending → Gray
+
+Running → Blue
+
+Completed → Green
+
+Failed → Red
+
+Waiting Approval → Orange
+
+---
+
+# 15. Theme
+
+Primary
+
+Indigo (#4F46E5)
+
+Success
+
+Emerald (#10B981)
+
+Warning
+
+Amber (#F59E0B)
+
+Danger
+
+Red (#EF4444)
+
+Info
+
+Sky Blue (#0EA5E9)
+
+Background
+
+Slate (#F8FAFC)
+
+Cards
+
+White
+
+Borders
+
+Gray (#E5E7EB)
+
+Support both Light Mode and Dark Mode.
+
+---
+
+# 16. Security
+
+JWT Authentication
+
+Protected Routes
+
+Role-Based Navigation
+
+Automatic Token Refresh (optional)
+
+Unauthorized Access Handling
+
+Secure API Communication
+
+---
+
+# 17. Error Handling
+
+Global Error Boundary
+
+404 Page
+
+500 Error State
+
+Toast Notifications
+
+Retry Actions
+
+Empty States
+
+---
+
+# 18. Performance Strategy
+
+* Route-based code splitting
+* Lazy loading
+* Memoized components
+* React Query caching
+* Optimistic updates where appropriate
+* Skeleton loading states
+* Image optimization
+
+---
+
+# 19. Accessibility
+
+Keyboard navigation
+
+Semantic HTML
+
+ARIA labels
+
+Visible focus indicators
+
+Color contrast compliance
+
+---
+
+# 20. Responsive Design
+
+Desktop (Primary)
+
+Tablet
+
+Mobile support for essential workflows
+
+Collapsible sidebar
+
+Responsive tables
+
+Adaptive charts
+
+---
+
+# 21. Testing Strategy
+
+Component Tests
+
+Page Tests
+
+API Integration Tests
+
+Route Tests
+
+Accessibility Checks
+
+---
+
+# 22. Future Scope
+
+* Real-time updates with WebSockets
+* Push notifications
+* Multi-language support
+* Mobile application
+* Microsoft Teams integration
+* Slack integration
+* Advanced workflow designer
+* AI chat assistant for onboarding status
+
+---
+
+# 23. Frontend Principles
+
+* Keep business logic in the backend.
+* Use reusable and composable components.
+* Maintain a consistent design system.
+* Provide clear feedback for every user action.
+* Make AI decisions transparent through workflow and audit views.
+* Ensure every major action is traceable and easy to understand.
+
+This architecture supports the backend design while delivering a scalable, maintainable, and enterprise-grade user experience aligned with the hackathon's evaluation criteria.
