@@ -111,3 +111,41 @@ Updates a policy (clearance, location, or any of the array fields). The change i
 ## AI planning
 
 When `GEMINI_API_KEY` is set in the environment, the onboarding coordinator uses Gemini to generate the task plan (tasks, dependencies, approval gates, and access needs). Without a key — or if the model response fails validation — it falls back to the rule-based role policy planner.
+
+## Employee support agent
+
+### POST /api/chat
+
+Sends a message to the employee support agent.
+
+Body shape: `{ message, sessionId?, employeeId? }` where `sessionId` continues an existing conversation and `employeeId` is only honored for Admin/HR users (used to ask about another employee).
+
+Response: `{ answer, intent, actionRequired, actionTaken, escalation: { status, department }, requestId, sessionId }`.
+
+Sensitive or support-request messages are never acted on by the agent: a `SupportRequest` is created, `actionRequired` is `true`, and `escalation` reports the routed department.
+
+### GET /api/chat/history
+
+Returns the authenticated user's chat sessions, each with its messages, newest session first. Admin/HR may pass `?employeeId=` to view another employee's sessions.
+
+### GET /api/chat/recent
+
+Returns the user's most recent chat messages.
+
+### GET /api/employee/context
+
+Returns the verified employee context used by the agent: employee profile, entitled software/hardware/permissions, approval requirements, and onboarding summaries. Admin/HR may pass `?employeeId=`.
+
+### POST /api/support/request
+
+Creates a self-service support request.
+
+Body shape: `{ category, subject, description }` where `category` is `HR`, `IT`, `Finance`, or `Security`.
+
+### GET /api/support/request
+
+Returns the authenticated user's support requests (or all requests for Admin/HR).
+
+### GET /api/support/request/:id
+
+Returns a single support request. Access is limited to the owner, or Admin/HR.

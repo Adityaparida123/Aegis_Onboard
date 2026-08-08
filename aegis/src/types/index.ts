@@ -135,3 +135,75 @@ export interface AppSettings {
   automation: AutomationSettings;
   integrations: IntegrationSettings;
 }
+
+export interface ChatEscalation {
+  status: string;
+  department: string | null;
+}
+
+export interface ChatReply {
+  answer: string;
+  intent: string;
+  actionRequired: boolean;
+  actionTaken: string;
+  escalation: ChatEscalation;
+  requestId: string | null;
+  sessionId: string;
+}
+
+export interface ChatMessage {
+  _id: string;
+  sessionId?: string;
+  employeeId?: string;
+  userId?: string;
+  message: string;
+  response: string;
+  intent?: string;
+  actionTaken?: string;
+  actionRequired?: boolean;
+  requestId?: string | null;
+  escalation?: ChatEscalation;
+  timestamp?: string;
+}
+
+export interface ChatSession {
+  _id: string;
+  employeeId?: string;
+  userId?: string;
+  title: string;
+  lastMessageAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  messages?: ChatMessage[];
+}
+
+export interface SupportRequest {
+  _id: string;
+  employeeId?: string;
+  userId?: string;
+  category: string;
+  subject: string;
+  description: string;
+  source?: string;
+  status: string;
+  assignedDepartment?: string;
+  createdByEmail?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface EmployeeContext {
+  employee: Employee;
+  softwareEntitled: string[];
+  hardwareEntitled: string[];
+  permissionsEntitled: string[];
+  approvalRequirements: string[];
+  onboarding: {
+    title: string;
+    status: string;
+    pendingTasks: string[];
+    completedTasks: number;
+    totalTasks: number;
+    approvals: string[];
+  }[];
+}

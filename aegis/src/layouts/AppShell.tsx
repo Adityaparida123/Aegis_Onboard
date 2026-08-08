@@ -13,6 +13,7 @@ const navItems = [
   { to: '/onboarding', label: 'Onboarding' },
   { to: '/workflows', label: 'Workflows' },
   { to: '/approvals', label: 'Approvals' },
+  { to: '/assistant', label: 'AI Assistant' },
   { to: '/audit', label: 'Audit Logs' },
   { to: '/policies', label: 'Policies' },
   { to: '/analytics', label: 'Analytics' },

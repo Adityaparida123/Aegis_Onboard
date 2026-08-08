@@ -16,6 +16,9 @@ const uploadRoutes = require('./routes/uploadRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const hrisRoutes = require('./routes/hrisRoutes');
 const policyRoutes = require('./routes/policyRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+const supportRequestRoutes = require('./routes/supportRequestRoutes');
+const employeeContextRoutes = require('./routes/employeeContextRoutes');
 
 const app = express();
 
@@ -56,6 +59,9 @@ app.use('/api/upload-offer', uploadRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/hris', hrisRoutes);
 app.use('/api/policies', policyRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/support', supportRequestRoutes);
+app.use('/api/employee', employeeContextRoutes);
 
 app.use(errorHandler);
 

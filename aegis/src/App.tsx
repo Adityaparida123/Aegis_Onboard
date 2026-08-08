@@ -18,6 +18,7 @@ const AuditPage = lazy(() => import('./pages/AuditPage').then((m) => ({ default:
 const PoliciesPage = lazy(() => import('./pages/PoliciesPage').then((m) => ({ default: m.PoliciesPage })));
 const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage').then((m) => ({ default: m.AnalyticsPage })));
 const SettingsPage = lazy(() => import('./pages/SettingsPage').then((m) => ({ default: m.SettingsPage })));
+const AssistantPage = lazy(() => import('./pages/AssistantPage').then((m) => ({ default: m.AssistantPage })));
 
 function PageLoader() {
   return (
@@ -52,6 +53,7 @@ export default function App() {
               <Route path="/audit" element={<AuditPage />} />
               <Route path="/policies" element={<PoliciesPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
+              <Route path="/assistant" element={<AssistantPage />} />
               <Route path="/settings" element={<SettingsPage />} />
             </Route>
           </Route>

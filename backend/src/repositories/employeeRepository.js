@@ -34,6 +34,14 @@ async function findEmployeeById(id) {
   return memoryEmployees.find((employee) => employee._id.toString() === id.toString()) || null;
 }
 
+async function findEmployeeByEmail(email) {
+  if (mongoose.connection.readyState === 1) {
+    return Employee.findOne({ email }).lean();
+  }
+
+  return memoryEmployees.find((employee) => employee.email === email) || null;
+}
+
 async function updateEmployee(id, payload) {
   if (mongoose.connection.readyState === 1) {
     return Employee.findByIdAndUpdate(id, payload, { new: true }).lean();
@@ -48,4 +56,4 @@ async function updateEmployee(id, payload) {
   return employee;
 }
 
-module.exports = { createEmployee, listEmployees, findEmployeeById, updateEmployee };
+module.exports = { createEmployee, listEmployees, findEmployeeById, findEmployeeByEmail, updateEmployee };
