@@ -30,21 +30,21 @@ export function ApprovalsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-700 dark:bg-slate-900">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-brand-600">Human approvals</p>
-            <h2 className="text-2xl font-semibold text-slate-900">Approval center</h2>
+            <p className="text-sm font-medium text-brand-600 dark:text-brand-300">Human approvals</p>
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Approval center</h2>
           </div>
-          <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-700">{pending.length} pending</span>
+          <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-700 dark:bg-amber-900/20 dark:text-amber-300">{pending.length} pending</span>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-        <h3 className="text-lg font-semibold text-slate-900">Pending requests</h3>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-700 dark:bg-slate-900">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Pending requests</h3>
 
         {isLoading ? (
-          <p className="mt-4 text-sm text-slate-500">Loading approvals…</p>
+          <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">Loading approvals…</p>
         ) : pending.length === 0 ? (
           <div className="mt-4">
             <EmptyState title="No pending approval requests" description="All approval gates are resolved." icon={<ShieldAlert className="h-6 w-6" />} />
@@ -52,10 +52,10 @@ export function ApprovalsPage() {
         ) : (
           <ul className="mt-4 space-y-3">
             {pending.map((approval) => (
-              <li key={approval._id} className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-5 md:flex-row md:items-center md:justify-between">
+              <li key={approval._id} className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-5 md:flex-row md:items-center md:justify-between dark:border-slate-700 dark:bg-slate-800/60">
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">{approval.resource}</p>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">{approval.resource}</p>
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                     Workflow {approval.workflowId} · requested by {approval.requestedBy ?? 'system'}
                   </p>
                 </div>
@@ -80,8 +80,8 @@ export function ApprovalsPage() {
         )}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-        <h3 className="text-lg font-semibold text-slate-900">Decision history</h3>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-700 dark:bg-slate-900">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Decision history</h3>
         {decided.length === 0 ? (
           <div className="mt-4">
             <EmptyState title="No decisions recorded yet" description="Approved and rejected requests will appear here." />
@@ -89,10 +89,10 @@ export function ApprovalsPage() {
         ) : (
           <ul className="mt-4 space-y-2">
             {decided.map((approval) => (
-              <li key={approval._id} className="flex flex-col gap-2 rounded-xl border border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-slate-800">{approval.resource}</p>
+              <li key={approval._id} className="flex flex-col gap-2 rounded-xl border border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700">
+                <p className="text-sm text-slate-800 dark:text-slate-200">{approval.resource}</p>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-500">{approval.requestedBy ?? 'system'}</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">{approval.requestedBy ?? 'system'}</span>
                   <StatusBadge status={approval.status} />
                 </div>
               </li>

@@ -125,6 +125,7 @@ export interface IntegrationSettings {
 }
 
 export interface AppSettings {
+  theme: 'light' | 'dark';
   profile: {
     timezone: string;
     locale: string;

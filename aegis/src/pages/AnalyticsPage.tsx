@@ -18,7 +18,7 @@ export function AnalyticsPage() {
   const stats: DashboardStats | undefined = data?.data;
 
   if (isLoading || !stats) {
-    return <div className="rounded-2xl border border-slate-200 bg-white p-8">Loading analytics…</div>;
+    return <div className="rounded-2xl border border-slate-200 bg-white p-8 dark:border-slate-700 dark:bg-slate-900">Loading analytics…</div>;
   }
 
   const statusData = Object.entries(stats.workflowStatusDistribution ?? {}).map(([name, value]) => ({ name, value }));
@@ -35,8 +35,8 @@ export function AnalyticsPage() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-          <h3 className="text-lg font-semibold text-slate-900">Workflow status distribution</h3>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-700 dark:bg-slate-900">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Workflow status distribution</h3>
           <div className="mt-4 h-72">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -49,8 +49,8 @@ export function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-          <h3 className="text-lg font-semibold text-slate-900">Tasks by department</h3>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-700 dark:bg-slate-900">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Tasks by department</h3>
           <div className="mt-4 h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={departmentData}>
@@ -64,8 +64,8 @@ export function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-          <h3 className="text-lg font-semibold text-slate-900">Daily onboardings (last 7 days)</h3>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-700 dark:bg-slate-900">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Daily onboardings (last 7 days)</h3>
           <div className="mt-4 h-72">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={dailyData}>
@@ -79,24 +79,24 @@ export function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-          <h3 className="text-lg font-semibold text-slate-900">Throughput</h3>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-700 dark:bg-slate-900">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Throughput</h3>
           <div className="mt-4 grid grid-cols-2 gap-4">
-            <div className="rounded-2xl bg-slate-50 p-5">
-              <p className="text-sm text-slate-500">Failed workflows</p>
-              <p className="mt-1 text-3xl font-semibold text-slate-900">{stats.failedWorkflows}</p>
+            <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/60">
+              <p className="text-sm text-slate-500 dark:text-slate-400">Failed workflows</p>
+              <p className="mt-1 text-3xl font-semibold text-slate-900 dark:text-white">{stats.failedWorkflows}</p>
             </div>
-            <div className="rounded-2xl bg-slate-50 p-5">
-              <p className="text-sm text-slate-500">Avg completion</p>
-              <p className="mt-1 text-3xl font-semibold text-slate-900">{stats.averageCompletionTime}m</p>
+            <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/60">
+              <p className="text-sm text-slate-500 dark:text-slate-400">Avg completion</p>
+              <p className="mt-1 text-3xl font-semibold text-slate-900 dark:text-white">{stats.averageCompletionTime}m</p>
             </div>
-            <div className="rounded-2xl bg-slate-50 p-5">
-              <p className="text-sm text-slate-500">Approvals</p>
-              <p className="mt-1 text-3xl font-semibold text-slate-900">{stats.totalApprovals}</p>
+            <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/60">
+              <p className="text-sm text-slate-500 dark:text-slate-400">Approvals</p>
+              <p className="mt-1 text-3xl font-semibold text-slate-900 dark:text-white">{stats.totalApprovals}</p>
             </div>
-            <div className="rounded-2xl bg-slate-50 p-5">
-              <p className="text-sm text-slate-500">Pending approvals</p>
-              <p className="mt-1 text-3xl font-semibold text-slate-900">{stats.pendingApprovals}</p>
+            <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/60">
+              <p className="text-sm text-slate-500 dark:text-slate-400">Pending approvals</p>
+              <p className="mt-1 text-3xl font-semibold text-slate-900 dark:text-white">{stats.pendingApprovals}</p>
             </div>
           </div>
         </div>

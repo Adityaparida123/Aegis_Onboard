@@ -1,8 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AppShell } from './layouts/AppShell';
 import { ProtectedRoute } from './routes/ProtectedRoute';
+import { useSettingsStore } from './store/settingsStore';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 const LoginPage = lazy(() => import('./pages/LoginPage').then((m) => ({ default: m.LoginPage })));
@@ -27,6 +28,12 @@ function PageLoader() {
 }
 
 export default function App() {
+  const theme = useSettingsStore((state) => state.settings.theme);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
+
   return (
     <ErrorBoundary>
       <Suspense fallback={<PageLoader />}>

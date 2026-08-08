@@ -23,11 +23,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-50 p-8 text-center">
-          <div className="rounded-2xl border border-rose-200 bg-white p-8 shadow-soft">
+        <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-50 p-8 text-center dark:bg-slate-950">
+          <div className="rounded-2xl border border-rose-200 bg-white p-8 shadow-soft dark:border-rose-900/50 dark:bg-slate-900">
             <p className="text-3xl">⚠️</p>
-            <h1 className="mt-2 text-xl font-semibold text-slate-900">Something went wrong</h1>
-            <p className="mt-2 text-sm text-slate-600">{this.state.message || 'An unexpected error occurred.'}</p>
+            <h1 className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">Something went wrong</h1>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{this.state.message || 'An unexpected error occurred.'}</p>
             <button
               type="button"
               onClick={() => {

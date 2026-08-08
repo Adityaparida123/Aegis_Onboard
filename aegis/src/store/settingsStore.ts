@@ -5,6 +5,7 @@ import type { AppSettings } from '../types';
 const STORAGE_KEY = 'aegis-settings';
 
 export const DEFAULT_SETTINGS: AppSettings = {
+  theme: 'light',
   profile: {
     timezone: 'UTC',
     locale: 'en-US'
@@ -35,6 +36,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
 
 interface SettingsState {
   settings: AppSettings;
+  setTheme: (theme: AppSettings['theme']) => void;
   setProfile: (profile: Partial<AppSettings['profile']>) => void;
   setNotifications: (patch: Partial<AppSettings['notifications']>) => void;
   setSecurity: (patch: Partial<AppSettings['security']>) => void;
@@ -47,6 +49,7 @@ export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
       settings: DEFAULT_SETTINGS,
+      setTheme: (theme) => set((state) => ({ settings: { ...state.settings, theme } })),
       setProfile: (profile) => set((state) => ({ settings: { ...state.settings, profile: { ...state.settings.profile, ...profile } } })),
       setNotifications: (patch) => set((state) => ({ settings: { ...state.settings, notifications: { ...state.settings.notifications, ...patch } } })),
       setSecurity: (patch) => set((state) => ({ settings: { ...state.settings, security: { ...state.settings.security, ...patch } } })),

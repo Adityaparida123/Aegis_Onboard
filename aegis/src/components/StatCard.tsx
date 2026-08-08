@@ -20,15 +20,15 @@ const accentStyles: Record<NonNullable<StatCardProps['accent']>, string> = {
 export function StatCard({ title, label, value, helper, icon, accent = 'brand' }: StatCardProps) {
   const heading = title ?? label;
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-700 dark:bg-slate-900">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-500">{heading}</p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">{value}</p>
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{heading}</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">{value}</p>
         </div>
         {icon ? <div className={`rounded-xl p-3 ${accentStyles[accent]}`}>{icon}</div> : null}
       </div>
-      {helper ? <p className="mt-3 text-sm text-slate-500">{helper}</p> : null}
+      {helper ? <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">{helper}</p> : null}
     </div>
   );
 }

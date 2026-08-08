@@ -37,8 +37,8 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-      <div className="w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft">
+    <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 dark:bg-slate-950">
+      <div className="w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft dark:border-slate-700 dark:bg-slate-900">
         <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
           <div className="bg-gradient-to-br from-brand-600 to-slate-900 p-8 text-white">
             <div className="flex items-center gap-3">
@@ -52,22 +52,22 @@ export function LoginPage() {
             <p className="mt-4 max-w-md text-sm text-slate-200">AI-assisted workflows, approvals, and audit logs come together in one control plane for modern teams.</p>
           </div>
           <div className="p-8">
-            <h2 className="text-2xl font-semibold text-slate-900">Welcome back</h2>
-            <p className="mt-2 text-sm text-slate-500">Use your team credentials to access the control center.</p>
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Welcome back</h2>
+            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Use your team credentials to access the control center.</p>
             <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
               <label className="block">
-                <span className="mb-2 block text-sm font-medium text-slate-700">Email</span>
-                <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-                  <Mail className="h-4 w-4 text-slate-400" />
-                  <input className="w-full bg-transparent outline-none" type="email" placeholder="you@company.com" {...register('email')} />
+                <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Email</span>
+                <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-800">
+                  <Mail className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                  <input className="w-full bg-transparent outline-none dark:text-slate-200" type="email" placeholder="you@company.com" {...register('email')} />
                 </div>
                 {errors.email ? <p className="mt-1 text-sm text-rose-600">{errors.email.message}</p> : null}
               </label>
               <label className="block">
-                <span className="mb-2 block text-sm font-medium text-slate-700">Password</span>
-                <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-                  <Lock className="h-4 w-4 text-slate-400" />
-                  <input className="w-full bg-transparent outline-none" type="password" placeholder="••••••••" {...register('password')} />
+                <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Password</span>
+                <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-800">
+                  <Lock className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                  <input className="w-full bg-transparent outline-none dark:text-slate-200" type="password" placeholder="••••••••" {...register('password')} />
                 </div>
                 {errors.password ? <p className="mt-1 text-sm text-rose-600">{errors.password.message}</p> : null}
               </label>
@@ -75,9 +75,9 @@ export function LoginPage() {
                 {loading ? 'Signing in…' : 'Sign in'}
               </button>
             </form>
-            <p className="mt-6 text-center text-sm text-slate-500">
+            <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
               Don't have an account?{' '}
-              <Link className="font-medium text-brand-600 hover:underline" to="/register">Create one</Link>
+              <Link className="font-medium text-brand-600 hover:underline dark:text-brand-300" to="/register">Create one</Link>
             </p>
           </div>
         </div>

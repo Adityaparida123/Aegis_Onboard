@@ -21,15 +21,15 @@ export function DashboardPage() {
   const workloadMax = workload.reduce((max, item) => Math.max(max, item.value), 0) || 1;
 
   if (isLoading) {
-    return <div className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-600">Loading dashboard…</div>;
+    return <div className="rounded-2xl border border-slate-200 bg-white p-8 text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">Loading dashboard…</div>;
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-brand-600">Operations overview</p>
-          <h2 className="text-2xl font-semibold text-slate-900">Executive dashboard</h2>
+          <p className="text-sm font-medium text-brand-600 dark:text-brand-300">Operations overview</p>
+          <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Executive dashboard</h2>
         </div>
       </div>
 
@@ -41,10 +41,10 @@ export function DashboardPage() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-700 dark:bg-slate-900">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-lg font-semibold">Workflow status</h3>
-            <span className="text-sm text-slate-500">Live distribution</span>
+            <span className="text-sm text-slate-500 dark:text-slate-400">Live distribution</span>
           </div>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={Object.entries(stats?.workflowStatusDistribution ?? {}).map(([name, value]) => ({ name, value }))}>
@@ -61,22 +61,22 @@ export function DashboardPage() {
           </ResponsiveContainer>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-700 dark:bg-slate-900">
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Department workload</h3>
-            <p className="text-sm text-slate-500">Current departmental allocation</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Current departmental allocation</p>
           </div>
           <div className="space-y-4">
             {workload.length === 0 ? (
-              <p className="text-sm text-slate-500">No task data yet.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">No task data yet.</p>
             ) : (
               workload.map((item) => (
                 <div key={item.name}>
                   <div className="mb-1 flex items-center justify-between text-sm">
                     <span>{item.name}</span>
-                    <span className="font-medium text-slate-700">{item.value}</span>
+                    <span className="font-medium text-slate-700 dark:text-slate-300">{item.value}</span>
                   </div>
-                  <div className="h-2 rounded-full bg-slate-100">
+                  <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800">
                     <div className="h-2 rounded-full bg-brand-500" style={{ width: `${(item.value / workloadMax) * 100}%` }} />
                   </div>
                 </div>
