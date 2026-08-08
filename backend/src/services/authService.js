@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../config/env');
 const { ValidationError, UnauthorizedError, ConflictError } = require('../utils/errors');
 const { createUser, findUserByEmail } = require('../repositories/userRepository');
+const { ensureEmployeeLink } = require('./employeeLinkService');
 
 function normalizeEmail(email) {
   return String(email).trim().toLowerCase();
@@ -27,8 +28,10 @@ async function registerUser(input) {
     role: input.role || 'HR'
   });
 
-  const token = jwt.sign({ sub: user._id.toString(), email: user.email, role: user.role }, jwtSecret, { expiresIn: '1h' });
-  return { user: { id: user._id, name: user.name, email: user.email, role: user.role }, token };
+  const employee = await ensureEmployeeLink(user._id);
+  const employeeId = employee ? employee._id : null;
+  const token = jwt.sign({ sub: user._id.toString(), email: user.email, role: user.role, employeeId: employeeId ? String(employeeId) : undefined }, jwtSecret, { expiresIn: '1h' });
+  return { user: { id: user._id, name: user.name, email: user.email, role: user.role, employeeId }, token, employeeId };
 }
 
 async function loginUser(input) {
@@ -43,8 +46,10 @@ async function loginUser(input) {
     throw new UnauthorizedError('Invalid email or password');
   }
 
-  const token = jwt.sign({ sub: user._id.toString(), email: user.email, role: user.role }, jwtSecret, { expiresIn: '1h' });
-  return { user: { id: user._id, name: user.name, email: user.email, role: user.role }, token };
+  const employee = await ensureEmployeeLink(user._id);
+  const employeeId = employee ? employee._id : null;
+  const token = jwt.sign({ sub: user._id.toString(), email: user.email, role: user.role, employeeId: employeeId ? String(employeeId) : undefined }, jwtSecret, { expiresIn: '1h' });
+  return { user: { id: user._id, name: user.name, email: user.email, role: user.role, employeeId }, token, employeeId };
 }
 
 module.exports = { registerUser, loginUser };

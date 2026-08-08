@@ -16,21 +16,8 @@ describe('Employee support agent API', () => {
   beforeAll(async () => {
     delete process.env.GEMINI_API_KEY;
 
-    const avaRegister = await request(app)
-      .post('/api/auth/register')
-      .send({ name: 'Ava Sharma', email: 'ava@example.com', password: 'secret123', role: 'HR' });
-    avaToken = avaRegister.body.data.token;
-
-    const staffRegister = await request(app)
-      .post('/api/auth/register')
-      .send({ name: 'Ivan Petrov', email: 'ivan@example.com', password: 'secret123', role: 'IT' });
-    staffToken = staffRegister.body.data.token;
-
-    const adminRegister = await request(app)
-      .post('/api/auth/register')
-      .send({ name: 'Root Admin', email: 'root@example.com', password: 'secret123', role: 'Admin' });
-    adminToken = adminRegister.body.data.token;
-
+    // Seed the employee profile BEFORE registration so register-time linking
+    // associates the account with this full profile (instead of a minimal one).
     const employee = await createEmployee({
       name: 'Ava Sharma',
       email: 'ava@example.com',
@@ -41,6 +28,7 @@ describe('Employee support agent API', () => {
       joiningDate: new Date('2026-08-02'),
       status: 'Provisioning'
     });
+
     const workflow = await createWorkflow({
       employeeId: employee._id,
       title: 'Onboarding for Ava Sharma',
@@ -70,6 +58,21 @@ describe('Employee support agent API', () => {
       status: 'Pending',
       requestedBy: 'Security Manager'
     });
+
+    const avaRegister = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Ava Sharma', email: 'ava@example.com', password: 'secret123', role: 'HR' });
+    avaToken = avaRegister.body.data.token;
+
+    const staffRegister = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Ivan Petrov', email: 'ivan@example.com', password: 'secret123', role: 'IT' });
+    staffToken = staffRegister.body.data.token;
+
+    const adminRegister = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Root Admin', email: 'root@example.com', password: 'secret123', role: 'Admin' });
+    adminToken = adminRegister.body.data.token;
   });
 
   afterAll(() => {

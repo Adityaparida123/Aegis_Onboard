@@ -36,10 +36,32 @@ async function findEmployeeById(id) {
 
 async function findEmployeeByEmail(email) {
   if (mongoose.connection.readyState === 1) {
-    return Employee.findOne({ email }).lean();
+    return Employee.findOne({ email: String(email).trim().toLowerCase() }).lean();
   }
 
-  return memoryEmployees.find((employee) => employee.email === email) || null;
+  return memoryEmployees.find((employee) => String(employee.email).trim().toLowerCase() === String(email).trim().toLowerCase()) || null;
+}
+
+async function findEmployeeByUserId(userId) {
+  if (mongoose.connection.readyState === 1) {
+    return Employee.findOne({ userId }).lean();
+  }
+
+  return memoryEmployees.find((employee) => employee.userId && employee.userId.toString() === String(userId)) || null;
+}
+
+async function linkEmployeeToUser(employeeId, userId) {
+  if (mongoose.connection.readyState === 1) {
+    await Employee.updateOne({ _id: employeeId, userId: { $exists: false } }, { $set: { userId } });
+    await Employee.updateOne({ _id: employeeId, userId: null }, { $set: { userId } });
+    return Employee.findById(employeeId).lean();
+  }
+
+  const employee = memoryEmployees.find((entry) => entry._id.toString() === String(employeeId));
+  if (employee && !employee.userId) {
+    employee.userId = String(userId);
+  }
+  return employee;
 }
 
 async function updateEmployee(id, payload) {
@@ -56,4 +78,4 @@ async function updateEmployee(id, payload) {
   return employee;
 }
 
-module.exports = { createEmployee, listEmployees, findEmployeeById, findEmployeeByEmail, updateEmployee };
+module.exports = { createEmployee, listEmployees, findEmployeeById, findEmployeeByEmail, findEmployeeByUserId, linkEmployeeToUser, updateEmployee };

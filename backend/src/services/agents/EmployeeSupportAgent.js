@@ -4,6 +4,7 @@ const { listPendingTasks } = require('./tools/taskStatusTool');
 const { getApprovalStatus } = require('./tools/approvalStatusTool');
 const { createRequestTool } = require('./tools/createRequestTool');
 const { auditLogTool } = require('./tools/auditLogTool');
+const { ensureEmployeeLink } = require('../employeeLinkService');
 const {
   createChatSession,
   findChatSessionById,
@@ -380,6 +381,13 @@ async function persistExchange({ user, employee, sessionId, message, result }) {
 
 async function handleMessage({ user, message, sessionId, requestedEmployeeId }, options = {}) {
   const { fetchImpl } = options;
+
+  try {
+    await ensureEmployeeLink(user);
+  } catch {
+    // Linking is best-effort; resolution still reports a clear message if none exists.
+  }
+
   const { employee, context } = await loadEmployeeContext(user, requestedEmployeeId);
 
   const history = sessionId ? await listMessagesBySession(sessionId) : [];

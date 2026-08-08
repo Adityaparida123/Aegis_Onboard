@@ -1,4 +1,4 @@
-const { findEmployeeById, findEmployeeByEmail } = require('../repositories/employeeRepository');
+const { findEmployeeById, findEmployeeByEmail, findEmployeeByUserId } = require('../repositories/employeeRepository');
 const { listWorkflows } = require('../repositories/workflowRepository');
 const { listTasksByWorkflow } = require('../repositories/taskRepository');
 const { listApprovalsByWorkflow } = require('../repositories/approvalRepository');
@@ -20,11 +20,27 @@ async function findEmployeeForUser(user, requestedEmployeeId) {
     return employee;
   }
 
-  if (!user?.email) {
-    return null;
+  const userId = user?.sub || user?.id || user?._id;
+
+  if (user?.employeeId) {
+    const linked = await findEmployeeById(user.employeeId);
+    if (linked) {
+      return linked;
+    }
   }
 
-  return findEmployeeByEmail(user.email);
+  if (userId) {
+    const byUserId = await findEmployeeByUserId(userId);
+    if (byUserId) {
+      return byUserId;
+    }
+  }
+
+  if (user?.email) {
+    return findEmployeeByEmail(user.email);
+  }
+
+  return null;
 }
 
 async function gatherEmployeeContext(employee) {

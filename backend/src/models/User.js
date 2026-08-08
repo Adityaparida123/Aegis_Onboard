@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   passwordHash: { type: String, required: true },
   role: { type: String, enum: ['Admin', 'HR', 'IT', 'Finance', 'Security Manager'], default: 'HR', index: true },
   department: { type: String, default: 'HR' },
+  employeeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee', index: true },
   active: { type: Boolean, default: true }
 }, { timestamps: true });
 
