@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npx concurrently -n backend,frontend -c blue,green \"npm --prefix backend run dev\" \"npm --prefix aegis run dev\"",
     "start": "npx concurrently -n backend,frontend -c blue,green \"npm --prefix backend run start\" \"npm --prefix aegis run dev\"",
+    "seed": "npm --prefix backend run seed",
     "install:all": "npm --prefix backend install && npm --prefix aegis install",
     "build": "npm --prefix backend run build && npm --prefix aegis run build"
   },

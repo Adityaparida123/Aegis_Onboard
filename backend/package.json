@@ -10,6 +10,7 @@
     "test": "jest --runInBand --testPathIgnorePatterns src/tests/database.test.js",
     "test:db": "jest --runInBand src/tests/database.test.js",
     "smoke": "node scripts/smoke.js",
+    "seed": "node scripts/seed.js",
     "lint": "eslint src --ext .js",
     "build": "node -e \"console.log('backend build ok')\""
   },
