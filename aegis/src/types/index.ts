@@ -97,3 +97,40 @@ export interface DashboardStats {
   tasksByDepartment: Record<string, number>;
   workflowStatusDistribution: Record<string, number>;
 }
+
+export interface NotificationSettings {
+  enabled: boolean;
+  approvalReminders: boolean;
+  workflowUpdates: boolean;
+  completionAlerts: boolean;
+  dailyDigest: boolean;
+  pollIntervalSeconds: number;
+}
+
+export interface SecuritySettings {
+  mfaEnabled: boolean;
+  sessionTimeoutMinutes: number;
+}
+
+export interface AutomationSettings {
+  aiAssisted: boolean;
+  autoProvisionLowRisk: boolean;
+}
+
+export interface IntegrationSettings {
+  email: boolean;
+  slack: boolean;
+  jira: boolean;
+  github: boolean;
+}
+
+export interface AppSettings {
+  profile: {
+    timezone: string;
+    locale: string;
+  };
+  notifications: NotificationSettings;
+  security: SecuritySettings;
+  automation: AutomationSettings;
+  integrations: IntegrationSettings;
+}

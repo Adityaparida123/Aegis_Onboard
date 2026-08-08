@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Bell, ChevronRight, Menu, Search, Settings, ShieldCheck, Sparkles, UserCircle2, X } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useSettingsStore } from '../store/settingsStore';
 import { getNotifications } from '../api/notification.api';
 
 const navItems = [
@@ -22,13 +23,22 @@ export function AppShell() {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
+  const notificationsSettings = useSettingsStore((state) => state.settings.notifications);
 
   const { data: notificationsData } = useQuery({
     queryKey: ['notifications'],
     queryFn: getNotifications,
-    refetchInterval: 30000
+    enabled: notificationsSettings.enabled,
+    refetchInterval: notificationsSettings.pollIntervalSeconds * 1000
   });
-  const notifications = notificationsData?.data?.notifications ?? [];
+  const rawNotifications = notificationsData?.data?.notifications ?? [];
+  const notifications = rawNotifications.filter((notification: any) => {
+    if (!notificationsSettings.enabled) return false;
+    const type: string = notification.type ?? '';
+    if (type === 'warning') return notificationsSettings.approvalReminders;
+    if (type === 'success') return notificationsSettings.completionAlerts;
+    return notificationsSettings.workflowUpdates;
+  });
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
