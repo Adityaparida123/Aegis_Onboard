@@ -17,6 +17,16 @@ async function findEmployeeForUser(user, requestedEmployeeId) {
     if (!employee) {
       throw new AppError('Employee not found', 404);
     }
+    console.log(
+      JSON.stringify({
+        diagnostic: 'employee_context_resolution',
+        step: 'via_requested_id',
+        userId: user?.sub || user?.id || user?._id ? String(user?.sub || user?.id || user?._id) : null,
+        email: user?.email || null,
+        role: user?.role || null,
+        employeeId: employee ? String(employee._id) : null
+      })
+    );
     return employee;
   }
 
@@ -25,6 +35,16 @@ async function findEmployeeForUser(user, requestedEmployeeId) {
   if (user?.employeeId) {
     const linked = await findEmployeeById(user.employeeId);
     if (linked) {
+      console.log(
+        JSON.stringify({
+          diagnostic: 'employee_context_resolution',
+          step: 'via_jwt_employee_id',
+          userId: userId ? String(userId) : null,
+          email: user?.email || null,
+          role: user?.role || null,
+          employeeId: String(linked._id)
+        })
+      );
       return linked;
     }
   }
@@ -32,14 +52,46 @@ async function findEmployeeForUser(user, requestedEmployeeId) {
   if (userId) {
     const byUserId = await findEmployeeByUserId(userId);
     if (byUserId) {
+      console.log(
+        JSON.stringify({
+          diagnostic: 'employee_context_resolution',
+          step: 'via_employee_user_id',
+          userId: String(userId),
+          email: user?.email || null,
+          role: user?.role || null,
+          employeeId: String(byUserId._id)
+        })
+      );
       return byUserId;
     }
   }
 
   if (user?.email) {
-    return findEmployeeByEmail(user.email);
+    const byEmail = await findEmployeeByEmail(user.email);
+    console.log(
+      JSON.stringify({
+        diagnostic: 'employee_context_resolution',
+        step: 'via_email_match',
+        userId: userId ? String(userId) : null,
+        email: user.email,
+        role: user?.role || null,
+        employeeId: byEmail ? String(byEmail._id) : null,
+        result: byEmail ? 'found' : 'not_found'
+      })
+    );
+    return byEmail;
   }
 
+  console.log(
+    JSON.stringify({
+      diagnostic: 'employee_context_resolution',
+      step: 'no_employee_resolved',
+      userId: userId ? String(userId) : null,
+      email: user?.email || null,
+      role: user?.role || null,
+      employeeId: null
+    })
+  );
   return null;
 }
 

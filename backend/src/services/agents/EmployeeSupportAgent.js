@@ -44,6 +44,10 @@ function extractJson(text) {
 const INTENT_PATTERNS = [
   { intent: 'greeting', patterns: [/^(hi|hello|hey|good morning|good afternoon|good evening)\b/i] },
   {
+    intent: 'role_info',
+    patterns: [/what('|')?s my role/i, /what is my role/i, /my job title/i, /what position/i, /what('|')?s my title/i, /my role/i, /who am i/i, /what am i hired/i, /what do i do here/i]
+  },
+  {
     intent: 'onboarding_status',
     patterns: [/onboard/i, /my status/i, /where am i in/i, /how far along/i, /what('|')s my status/i, /joining date/i, /start date/i]
   },
@@ -193,6 +197,16 @@ function buildFallbackAnswer({ message, intent, context, employee }) {
     case 'greeting': {
       const name = employee?.name?.split(' ')[0];
       return `Hi ${name || 'there'}! I'm your Aegis employee support assistant. Ask me about your onboarding, pending tasks, approvals, or software entitlements — or I can create a request for HR, IT, Finance, or Security.`;
+    }
+    case 'role_info': {
+      const role = employee?.role;
+      const department = employee?.department;
+      if (!role) {
+        return "I don't have a verified role on file for you yet. I can create an HR request to confirm.";
+      }
+      const parts = [`Your role is ${role}.`];
+      if (department) parts.push(`You are in the ${department} department.`);
+      return parts.join(' ');
     }
     case 'onboarding_status': {
       const summary = getOnboardingSummary(context);
